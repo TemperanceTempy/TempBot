@@ -49,6 +49,7 @@ client.on("message", message => {
   const command = args.shift().toLowerCase();
 
   // Command-specific code here!
+
   if(command==="help"){
     score = client.getScore.get(message.author.id, message.guild.id);
     score.uses++;
