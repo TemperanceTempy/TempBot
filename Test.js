@@ -24,7 +24,9 @@ if (!table['count(*)']) {
   client.getScore = sql.prepare("SELECT * FROM pointTracker WHERE user = ? AND guild = ?");
   client.setScore = sql.prepare("INSERT OR REPLACE INTO pointTracker (id, user, guild, points, uses) VALUES (@id, @user, @guild, @points, @uses);");
 });
-
+function RandomNum(){
+  return(Math.floor(Math.random()*100)+1);
+}
 client.on("message", message => {
   if (message.author.bot) return;
   let score;
@@ -78,7 +80,7 @@ client.on("message", message => {
     }
     else {
 
-    let chance = Math.floor(Math.random()*100+1);
+    let chance = RandomNum();
       if(chance <30){
        message.channel.send("Hmph! I don't think so!");
         score = client.getScore.get(message.author.id, message.guild.id);
@@ -115,7 +117,7 @@ client.on("message", message => {
     }
   }
   if(command==="rng"){
-    return message.reply("your number is " + Math.floor(Math.random()*100+1));
+    return message.reply("your number is " + RandomNum());
   }
   if(command==="uses"){
     score = client.getScore.get(message.author.id, message.guild.id);
@@ -148,10 +150,7 @@ if(command === "give") {
   }
   userscore.points += pointsToAdd;
 
-  // We also want to update their level (but we won't notify them if it changes)
 
-
-  // And we save it!
   client.setScore.run(userscore);
   score.uses++;
   return message.channel.send(`${user.tag} has received ${pointsToAdd} points and now stands at ${userscore.points} points.`);
